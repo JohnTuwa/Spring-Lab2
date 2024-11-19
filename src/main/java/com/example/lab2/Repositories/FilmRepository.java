@@ -8,14 +8,21 @@ public class FilmRepository{
 
     private List<Film> films = new ArrayList<>();
 
-    public void addFilm(Long id,String title,double rating,double ticketPrice,String sessionTime) {
+    public void addFilm(long id,String title,double rating,double ticketPrice,String sessionTime) {
         Film film = new Film(id,title,rating,ticketPrice,sessionTime);
         films.add(film);
+    }
+
+    public String getById(long id){
+        for (Film film : films) {
+            if (film.getId() == id){
+                return film.getTitle();
+            }
+        }
+        return null;
     }
 
     public List<Film> findAll() {
         return films;
     }
-
-
 }
