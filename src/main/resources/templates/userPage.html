@@ -12,6 +12,12 @@ you are user
   <td th:text="${film.getRating()}">
   <td th:text="${film.getTicketPrice()}">
   <td th:text="${film.getSessionTime()}">
+  <td>
+    <form th:action="@{/user/buyTicket}" method="post">
+      <input type="hidden" name="filmId" th:value="${film.getId()}">
+      <input type="submit" value="Buy Ticket">
+    </form>
+  </td>
 </tr>
 </table>
 </body>

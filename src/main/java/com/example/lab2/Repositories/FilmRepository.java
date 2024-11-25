@@ -7,17 +7,26 @@ import java.util.List;
 @Repository
 public class FilmRepository{
 
-    private List<Film> films = new ArrayList<>();
+    private List<Film> films;
 
-    public void addFilm(long id,String title,double rating,double ticketPrice,String sessionTime) {
-        Film film = new Film(id,title,rating,ticketPrice,sessionTime);
+    public FilmRepository() {
+        int rows = 8;
+        int seats = 16;
+        films = new ArrayList<>();
+        films.add(new Film(1, "Inception", 8.8, 12.5, "18:00", new boolean[rows][seats]));
+        films.add(new Film(2, "The Matrix", 8.7, 10.0, "20:00", new boolean[rows][seats]));
+        films.add(new Film(3, "Interstellar", 8.6, 15.0, "21:00", new boolean[rows][seats]));
+    }
+
+    public void addFilm(long id,String title,double rating,double ticketPrice,String sessionTime,boolean[][] seats) {
+        Film film = new Film(id,title,rating,ticketPrice,sessionTime,seats);
         films.add(film);
     }
 
-    public String getById(long id){
+    public Film getById(long id){
         for (Film film : films) {
             if (film.getId() == id){
-                return film.getTitle();
+                return film;
             }
         }
         return null;

@@ -14,4 +14,5 @@ public class Film {
     private double rating;
     private double ticketPrice;
     private String sessionTime;
+    private boolean[][] seats;
 }
