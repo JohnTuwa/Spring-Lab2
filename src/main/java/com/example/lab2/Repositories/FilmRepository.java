@@ -8,19 +8,29 @@ import java.util.List;
 public class FilmRepository{
 
     private List<Film> films;
+    public long nextId = 1;
+    int rows = 8;
+    int seats = 16;
 
     public FilmRepository() {
-        int rows = 8;
-        int seats = 16;
+
         films = new ArrayList<>();
-        films.add(new Film(1, "Inception", 8.8, 12.5, "18:00", new boolean[rows][seats]));
-        films.add(new Film(2, "The Matrix", 8.7, 10.0, "20:00", new boolean[rows][seats]));
-        films.add(new Film(3, "Interstellar", 8.6, 15.0, "21:00", new boolean[rows][seats]));
+        films.add(new Film(nextId++, "Inception", 8.8, 12.5, "18:00", new boolean[rows][seats]));
+        films.add(new Film(nextId++, "The Matrix", 8.7, 10.0, "20:00", new boolean[rows][seats]));
+        films.add(new Film(nextId++, "Interstellar", 8.6, 15.0, "21:00", new boolean[rows][seats]));
     }
 
-    public void addFilm(long id,String title,double rating,double ticketPrice,String sessionTime,boolean[][] seats) {
-        Film film = new Film(id,title,rating,ticketPrice,sessionTime,seats);
+    public void addFilm(String title, double rating, double ticketPrice, String sessionTime) {
+        Film film = new Film(nextId++, title, rating, ticketPrice, sessionTime, new boolean[rows][seats]);
         films.add(film);
+    }
+
+    public void removeFilm(long id) {
+        films.removeIf(film -> film.getId() == id);
+    }
+
+    public boolean filmExists(long id) {
+        return films.stream().anyMatch(film -> film.getId() == id);
     }
 
     public Film getById(long id){

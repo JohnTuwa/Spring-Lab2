@@ -4,7 +4,31 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
 you are admin
+<table>
+    <tr th:each="film:${allFilms}">
+        <td th:text="${film.getTitle()}">
+        <td th:text="${film.getRating()}">
+        <td th:text="${film.getTicketPrice()}">
+        <td th:text="${film.getSessionTime()}">
+        <td>
+            <form th:action="@{/admin/edit}" method="post">
+                <input type="hidden" name="filmId" th:value="${film.getId()}">
+                <input type="submit" value="Edit">
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/admin/remove}" method="post">
+                <input type="hidden" name="filmId" th:value="${film.getId()}">
+                <input type="submit" value="Remove">
+            </form>
+        </td>
+    </tr>
+</table>
+<form th:action="@{/admin/new}" method="post" >
+    <input type="submit"  value="Add new">
+</form>
 </body>
 </html>

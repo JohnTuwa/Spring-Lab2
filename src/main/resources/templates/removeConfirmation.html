@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film remove confirmation page</title>
+</head>
+<body>
+<h1 th:text="${success ? 'An error happened' : 'Movie removed successfully'}"></h1>
+<form action="/admin" method="post" >
+    <input type="submit"  value="Back to main page">
+</form>
+</body>
+</html>
