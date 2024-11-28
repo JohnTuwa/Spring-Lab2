@@ -5,19 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-    test
-
-    <form action="/getById" method="post">
-        <input name="filmId">
-        <input type="submit" value="get">
-    </form>
-
-    <form action="/user" method="post">
-        <input type="submit" value="User">
-    </form>
-
-    <form action="/admin" method="post">
-        <input type="submit" value="Admin">
-    </form>
+<form action="/login" method="get">
+    <input name="userLogin">
+    <input name="userPassword">
+    <input type="submit" value="login">
+</form>
+<form action="/user" method="post">
+    <input type="submit" value="User">
+</form>
+<form action="/admin" method="post">
+    <input type="submit" value="Admin">
+</form>
 </body>
 </html>
