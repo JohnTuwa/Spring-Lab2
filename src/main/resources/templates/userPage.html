@@ -6,6 +6,12 @@
 </head>
 <body>
 <table>
+  <tr>
+    <td><b>Title</b></td>
+    <td><b>Rating</b></td>
+    <td><b>Ticket price</b></td>
+    <td><b>Session time</b></td>
+  </tr>
 <tr th:each="film:${allFilms}">
   <td th:text="${film.getTitle()}">
   <td th:text="${film.getRating()}">
@@ -19,5 +25,8 @@
   </td>
 </tr>
 </table>
+<form action="/">
+  <input type="submit"  value="Log out">
+</form>
 </body>
 </html>

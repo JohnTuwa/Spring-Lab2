@@ -7,7 +7,15 @@
 
 <body>
 <table>
+    <tr>
+        <td><b>ID</b></td>
+        <td><b>Title</b></td>
+        <td><b>Rating</b></td>
+        <td><b>Ticket price</b></td>
+        <td><b>Session time</b></td>
+    </tr>
     <tr th:each="film:${allFilms}">
+        <td th:text="${film.getId()}">
         <td th:text="${film.getTitle()}">
         <td th:text="${film.getRating()}">
         <td th:text="${film.getTicketPrice()}">
@@ -26,8 +34,11 @@
         </td>
     </tr>
 </table>
-<form th:action="@{/admin/new}" method="post" >
+<form th:action="@{/admin/new}" method="post">
     <input type="submit"  value="Add new">
+</form>
+<form action="/">
+    <input type="submit"  value="Log out">
 </form>
 </body>
 </html>
