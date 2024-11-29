@@ -29,14 +29,6 @@ public class AdminController {
         return "adminPage";
     }
 
-    @PostMapping("/getById")
-    private String getById(long filmId, Model model) {
-        // Not final, just testing controller
-        String title = filmRepository.getById(filmId).getTitle();
-        model.addAttribute("title", title);
-        return "tmp";
-    }
-
     @PostMapping("/admin/edit")
     private String editFilm(long filmId, Model model){
         Film film = filmRepository.getById(filmId);
