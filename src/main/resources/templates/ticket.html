@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        .rows{
+            padding: 20px;
+        }
         .red {
             background-color: #d35d5d;
             border: none;
@@ -40,12 +43,13 @@
 <body>
 <table>
     <tr th:each="row, rowIter:${seats}">
+        <td class="rows" th:text="'Row '+${rowIter.index+1}"></td>
         <td th:each="seat, colIter:${row}">
             <form action="/user/buyTicket/confirmation" method="post">
                 <input type="hidden" name="filmId" th:value="${filmId}">
                 <input type="hidden" name="row" th:value="${rowIter.index}">
                 <input type="hidden" name="seat" th:value="${colIter.index}">
-                <input type="submit" th:classappend="${seat ? 'red' : 'green'}" value="Buy">
+                <input type="submit" th:classappend="${seat ? 'red' : 'green'}" th:value="${colIter.index+1}">
             </form>
         </td>
     </tr>
