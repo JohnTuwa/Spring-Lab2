@@ -49,12 +49,7 @@ public class AdminController {
     @PostMapping("/admin/edit/success")
     private String editSuccess(long filmId, String title, double rating,
                                double ticketPrice, String sessionTime){
-        Film film = filmRepository.getById(filmId);
-
-        film.setTitle(title);
-        film.setRating(rating);
-        film.setTicketPrice(ticketPrice);
-        film.setSessionTime(sessionTime);
+        adminService.editFilm(filmId, title, rating, ticketPrice, sessionTime);
 
         return "editSuccess";
     }
@@ -69,8 +64,7 @@ public class AdminController {
 
     @PostMapping("/admin/remove/success")
     private String removeSuccess(long filmId, Model model) {
-        filmRepository.removeFilm(filmId);
-        boolean success = adminService.checkIfExists(filmId);
+        boolean success = adminService.removeFilm(filmId);
         model.addAttribute("success", success);
         return "removeConfirmation";
     }
@@ -83,8 +77,7 @@ public class AdminController {
     @PostMapping("/admin/new/confirm")
     private String newSuccess(String title, double rating, double ticketPrice,
                               String sessionTime, Model model){
-        filmRepository.addFilm(title, rating, ticketPrice, sessionTime);
-        boolean success = adminService.checkIfExists(filmRepository.nextId);
+        boolean success = adminService.newFilm(title, rating, ticketPrice, sessionTime);
         model.addAttribute("success", success);
         return "newConfirmation";
     }
