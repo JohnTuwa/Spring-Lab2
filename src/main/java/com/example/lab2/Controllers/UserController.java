@@ -1,7 +1,7 @@
 package com.example.lab2.Controllers;
 
-import com.example.lab2.Repositories.Film.Film;
-import com.example.lab2.Repositories.Film.FilmRepository;
+import com.example.lab2.Repositories.Film;
+import com.example.lab2.Repositories.FilmRepository;
 import com.example.lab2.Sevices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
