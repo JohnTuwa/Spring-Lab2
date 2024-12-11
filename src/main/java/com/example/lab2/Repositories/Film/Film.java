@@ -1,4 +1,4 @@
-package com.example.lab2.Repositories;
+package com.example.lab2.Repositories.Film;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;

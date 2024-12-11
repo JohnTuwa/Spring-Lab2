@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<h1 th:text="${success ? 'Ticket bought successfully' : 'Seat is already taken'}"></h1>
+<h1 th:text="${status ? 'Ticket bought successfully' : 'Seat is already taken'}"></h1>
 <form action="/user" method="post">
     <input type="submit" value="Back to main page">
 </form>

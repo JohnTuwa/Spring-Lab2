@@ -7,7 +7,7 @@
 <body>
 Are you sure you want to remove <span th:text="${movieName}"></span>?
 <br>
-<form th:action="@{/admin/remove/success}" method="post">
+<form th:action="@{/admin/remove/status}" method="post">
     <input type="hidden" name="filmId" th:value="${filmId}">
     <input type="submit" value="Yes">
 </form>

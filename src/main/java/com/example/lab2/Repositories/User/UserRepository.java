@@ -1,4 +1,4 @@
-package com.example.lab2.Repositories;
+package com.example.lab2.Repositories.User;
 
 import org.springframework.stereotype.Repository;
 

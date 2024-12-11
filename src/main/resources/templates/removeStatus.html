@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Film edit success</title>
+    <title>Film remove confirmation page</title>
 </head>
 <body>
-<h1>Film successfully edited.</h1>
+<h1 th:text="${status ? 'An error happened' : 'Movie removed successfully'}"></h1>
 <form action="/admin" method="post" >
     <input type="submit"  value="Back to main page">
 </form>

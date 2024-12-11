@@ -8,25 +8,25 @@
 
 <h1>Edit existing film</h1>
 
-<form th:action="@{/admin/edit/success}" method="post">
+<form th:action="@{/admin/edit/status}" method="post">
 
     <input type="hidden" name="filmId" th:value="${filmId}">
 
     <label for="title">Title: </label>
-    <input type="text" th:placeholder="${title}"
-           th:value="${title}" id="title" name="title"><br><br>
+    <input type="text" th:value="${title}" th:placeholder="${title}"
+           id="title" name="title"><br><br>
 
     <label for="rating">Rating: </label>
-    <input type="number" th:placeholder="${rating}"
-           th:value="${rating}" step="0.1" id="rating" name="rating"><br><br>
+    <input type="number" th:value="${rating}" step="0.1" th:placeholder="${rating}"
+           id="rating" name="rating"><br><br>
 
     <label for="ticketPrice">Ticket price: </label>
-    <input type="number" th:placeholder="${ticketPrice}"
-           th:value="${ticketPrice}" step="0.1" id="ticketPrice" name="ticketPrice"><br><br>
+    <input type="number" th:value="${ticketPrice}" step="0.1" th:placeholder="${ticketPrice}"
+           id="ticketPrice" name="ticketPrice"><br><br>
 
     <label for="sessionTime">Session time: </label>
-    <input type="text" th:placeholder="${sessionTime}"
-           th:value="${sessionTime}" id="sessionTime" name="sessionTime"><br><br>
+    <input type="text" th:value="${sessionTime}" th:placeholder="${sessionTime}"
+           id="sessionTime" name="sessionTime"><br><br>
 
     <input type="submit" value="Edit">
 </form>

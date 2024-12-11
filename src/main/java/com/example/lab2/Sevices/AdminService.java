@@ -1,7 +1,7 @@
 package com.example.lab2.Sevices;
 
-import com.example.lab2.Repositories.Film;
-import com.example.lab2.Repositories.FilmRepository;
+import com.example.lab2.Repositories.Film.Film;
+import com.example.lab2.Repositories.Film.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +33,8 @@ public class AdminService {
         return this.checkIfExists(filmId);
     }
 
-    public boolean newFilm(String title, double rating,
+    public void newFilm(String title, double rating,
                            double ticketPrice, String sessionTime){
         filmRepository.addFilm(title, rating, ticketPrice, sessionTime);
-        return this.checkIfExists(filmRepository.nextId);
     }
 }

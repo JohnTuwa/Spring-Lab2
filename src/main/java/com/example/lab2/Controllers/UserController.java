@@ -1,7 +1,7 @@
 package com.example.lab2.Controllers;
 
-import com.example.lab2.Repositories.Film;
-import com.example.lab2.Repositories.FilmRepository;
+import com.example.lab2.Repositories.Film.Film;
+import com.example.lab2.Repositories.Film.FilmRepository;
 import com.example.lab2.Sevices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -36,10 +36,10 @@ public class UserController {
         model.addAttribute("filmId", filmId);
         return "ticket";
     }
-    @PostMapping("/user/buyTicket/confirmation")
+    @PostMapping("/user/buyTicket/status")
     private String buyTicket(int row, int seat, long filmId, Model model) {
-        boolean success = userService.checkSeat(row, seat, filmId);
-        model.addAttribute("success", success);
-        return "buyConfirmation";
+        boolean status = userService.checkSeat(row, seat, filmId);
+        model.addAttribute("status", status);
+        return "buyStatus";
     }
 }

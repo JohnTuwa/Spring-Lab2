@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film remove confirmation page</title>
+</head>
+<body>
+<h1 th:switch="${status}">
+    <span th:case="1">Error: Name can't be empty</span>
+    <span th:case="2">Error: Rating can't be negative</span>
+    <span th:case="3">Error: Ticket price can't be negative</span>
+    <span th:case="4">Error: Session time can't be empty</span>
+    <span th:case="5">Session added successfully</span>
+</h1>
+<form action="/admin" method="post" >
+    <input type="submit"  value="Back to main page">
+</form>
+</body>
+</html>

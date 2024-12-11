@@ -45,7 +45,7 @@
     <tr th:each="row, rowIter:${seats}">
         <td class="rows" th:text="'Row '+${rowIter.index+1}"></td>
         <td th:each="seat, colIter:${row}">
-            <form action="/user/buyTicket/confirmation" method="post">
+            <form action="/user/buyTicket/status" method="post">
                 <input type="hidden" name="filmId" th:value="${filmId}">
                 <input type="hidden" name="row" th:value="${rowIter.index}">
                 <input type="hidden" name="seat" th:value="${colIter.index}">

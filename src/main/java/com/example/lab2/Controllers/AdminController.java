@@ -1,12 +1,13 @@
 package com.example.lab2.Controllers;
 
-import com.example.lab2.Repositories.Film;
-import com.example.lab2.Repositories.FilmRepository;
+import com.example.lab2.Repositories.Film.Film;
+import com.example.lab2.Repositories.Film.FilmRepository;
 import com.example.lab2.Sevices.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -46,12 +47,38 @@ public class AdminController {
         return "editFilm";
     }
 
-    @PostMapping("/admin/edit/success")
-    private String editSuccess(long filmId, String title, double rating,
-                               double ticketPrice, String sessionTime){
-        adminService.editFilm(filmId, title, rating, ticketPrice, sessionTime);
-
-        return "editSuccess";
+    @PostMapping("/admin/edit/status")
+    private String editStatus(long filmId,
+                              @RequestParam(defaultValue = "") String title,
+                              @RequestParam(defaultValue = "0") double rating,
+                              @RequestParam(defaultValue = "0") double ticketPrice,
+                              @RequestParam(defaultValue = "") String sessionTime,
+                              Model model){
+        int status;
+        switch (title.isEmpty() ? 1
+                : rating < 0 ? 2
+                : ticketPrice < 0 ? 3
+                : sessionTime.isEmpty() ? 4
+                : 5) {
+            case 1:
+                status = 1; // Empty name
+                break;
+            case 2:
+                status = 2; // Negative rating
+                break;
+            case 3:
+                status = 3; // Negative ticket price
+                break;
+            case 4:
+                status = 4; // Empty session time
+                break;
+            default:
+                status = 5; // All inputs are valid
+                adminService.editFilm(filmId, title, rating, ticketPrice, sessionTime);
+                break;
+        }
+        model.addAttribute("status", status);
+        return "editStatus";
     }
 
     @PostMapping("/admin/remove")
@@ -62,11 +89,11 @@ public class AdminController {
         return "removeFilm";
     }
 
-    @PostMapping("/admin/remove/success")
-    private String removeSuccess(long filmId, Model model) {
-        boolean success = adminService.removeFilm(filmId);
-        model.addAttribute("success", success);
-        return "removeConfirmation";
+    @PostMapping("/admin/remove/status")
+    private String removeStatus(long filmId, Model model) {
+        boolean status = adminService.removeFilm(filmId);
+        model.addAttribute("status", status);
+        return "removeStatus";
     }
 
     @PostMapping("/admin/new")
@@ -74,12 +101,38 @@ public class AdminController {
         return "newFilm";
     }
 
-    @PostMapping("/admin/new/confirm")
-    private String newSuccess(String title, double rating, double ticketPrice,
-                              String sessionTime, Model model){
-        boolean success = adminService.newFilm(title, rating, ticketPrice, sessionTime);
-        model.addAttribute("success", success);
-        return "newConfirmation";
+    @PostMapping("/admin/new/status")
+    private String newStatus(@RequestParam(defaultValue = "") String title,
+                             @RequestParam(defaultValue = "0") double rating,
+                             @RequestParam(defaultValue = "0") double ticketPrice,
+                             @RequestParam(defaultValue = "") String sessionTime,
+                             Model model){
+        int status;
+        switch (title.isEmpty() ? 1
+                : rating < 0 ? 2
+                : ticketPrice < 0 ? 3
+                : sessionTime.isEmpty() ? 4
+                : 5) {
+            case 1:
+                status = 1; // Empty name
+                break;
+            case 2:
+                status = 2; // Negative rating
+                break;
+            case 3:
+                status = 3; // Negative ticket price
+                break;
+            case 4:
+                status = 4; // Empty session time
+                break;
+            default:
+                status = 5; // All inputs are valid
+                adminService.newFilm(title, rating, ticketPrice, sessionTime);
+                break;
+        }
+        model.addAttribute("status", status);
+        return "newStatus";
     }
+
 
 }

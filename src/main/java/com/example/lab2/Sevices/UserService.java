@@ -1,6 +1,6 @@
 package com.example.lab2.Sevices;
 
-import com.example.lab2.Repositories.FilmRepository;
+import com.example.lab2.Repositories.Film.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
