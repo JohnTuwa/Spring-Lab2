@@ -54,29 +54,11 @@ public class AdminController {
                               @RequestParam(defaultValue = "0") double ticketPrice,
                               @RequestParam(defaultValue = "") String sessionTime,
                               Model model){
-        int status;
-        switch (title.isEmpty() ? 1
-                : rating < 0 ? 2
-                : ticketPrice < 0 ? 3
-                : sessionTime.isEmpty() ? 4
-                : 5) {
-            case 1:
-                status = 1; // Empty name
-                break;
-            case 2:
-                status = 2; // Negative rating
-                break;
-            case 3:
-                status = 3; // Negative ticket price
-                break;
-            case 4:
-                status = 4; // Empty session time
-                break;
-            default:
-                status = 5; // All inputs are valid
-                adminService.editFilm(filmId, title, rating, ticketPrice, sessionTime);
-                break;
+        int status = adminService.checkStatus(title, rating, ticketPrice, sessionTime);
+        if (status == 5) {
+            adminService.editFilm(filmId, title, rating, ticketPrice, sessionTime);
         }
+        System.out.println(status);
         model.addAttribute("status", status);
         return "editStatus";
     }
@@ -107,28 +89,9 @@ public class AdminController {
                              @RequestParam(defaultValue = "0") double ticketPrice,
                              @RequestParam(defaultValue = "") String sessionTime,
                              Model model){
-        int status;
-        switch (title.isEmpty() ? 1
-                : rating < 0 ? 2
-                : ticketPrice < 0 ? 3
-                : sessionTime.isEmpty() ? 4
-                : 5) {
-            case 1:
-                status = 1; // Empty name
-                break;
-            case 2:
-                status = 2; // Negative rating
-                break;
-            case 3:
-                status = 3; // Negative ticket price
-                break;
-            case 4:
-                status = 4; // Empty session time
-                break;
-            default:
-                status = 5; // All inputs are valid
-                adminService.newFilm(title, rating, ticketPrice, sessionTime);
-                break;
+        int status = adminService.checkStatus(title, rating, ticketPrice, sessionTime);
+        if(status == 5){
+            adminService.newFilm(title, rating, ticketPrice, sessionTime);
         }
         model.addAttribute("status", status);
         return "newStatus";
