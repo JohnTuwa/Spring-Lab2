@@ -1,8 +1,8 @@
-package com.example.lab4.Controllers;
+package com.example.lab5.Controllers;
 
-import com.example.lab4.Repositories.Film;
-import com.example.lab4.Repositories.FilmRepository;
-import com.example.lab4.Sevices.AdminService;
+import com.example.lab5.Repositories.Film;
+import com.example.lab5.Repositories.OracleFilmRepo;
+import com.example.lab5.Sevices.RESTService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,15 +16,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminController {
+public class RESTController {
 
-    private final FilmRepository filmRepository;
-    private final AdminService adminService;
+    private final RESTService adminService;
+    private final OracleFilmRepo oracleFilmRepo;
 
     @Autowired
-    public AdminController(FilmRepository filmRepository, AdminService adminService) {
-        this.filmRepository = filmRepository;
+    public RESTController(RESTService adminService, OracleFilmRepo oracleFilmRepo) {
         this.adminService = adminService;
+        this.oracleFilmRepo = oracleFilmRepo;
     }
 
     @Operation(
@@ -33,7 +33,7 @@ public class AdminController {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Success")})
     @GetMapping("/films")
     private ResponseEntity<List<Film>> allFilms() {
-        List<Film> films = filmRepository.findAll();
+        List<Film> films = oracleFilmRepo.findAll();
         return ResponseEntity.ok(films);
     }
 
@@ -49,7 +49,7 @@ public class AdminController {
     })
     @GetMapping("/film/{filmId}")
     private ResponseEntity<Film> filmById(@PathVariable long filmId) {
-        Film film = filmRepository.getById(filmId);
+        Film film = oracleFilmRepo.getById(filmId);
         if (film == null) {
             return ResponseEntity.notFound().build();
         }
@@ -61,10 +61,15 @@ public class AdminController {
             description = "Adding film to repository")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success")})
-    @PostMapping("/add")
-    private ResponseEntity<String> addFilm(@RequestBody Film film ){
-
-        adminService.newFilm(
+    @PostMapping("/add/{filmId}")
+    private ResponseEntity<String> addFilm(@PathVariable long filmId, @RequestBody Film film ){
+        System.out.println(film.getFilmId());
+        System.out.println(filmId);
+        if(filmId != film.getFilmId()) {
+            return ResponseEntity.badRequest().build();
+        }
+        adminService.saveFilm(
+                filmId,
                 film.getTitle(),
                 film.getRating(),
                 film.getTicketPrice(),
@@ -86,13 +91,14 @@ public class AdminController {
     })
     @PutMapping("/edit/{filmId}")
     private ResponseEntity<String> editFilm(@PathVariable long filmId, @RequestBody Film film ){
-        if(filmId != film.getId()){
+        if(filmId != film.getFilmId()){
             return ResponseEntity.badRequest().build();
         }
-        if (filmRepository.getById(filmId) == null) {
+        if (oracleFilmRepo.getById(filmId) == null) {
             return ResponseEntity.notFound().build();
         }
-        adminService.editFilm(filmId,
+        adminService.saveFilm(
+                filmId,
                 film.getTitle(),
                 film.getRating(),
                 film.getTicketPrice(),
@@ -113,7 +119,7 @@ public class AdminController {
     })
     @DeleteMapping("/remove/{filmId}")
     private ResponseEntity<String> removeFilm(@PathVariable long filmId){
-        if(filmRepository.getById(filmId) == null){
+        if(oracleFilmRepo.getById(filmId) == null){
             return ResponseEntity.notFound().build();
         }
         adminService.removeFilm(filmId);
