@@ -58,6 +58,7 @@ public class RESTController {
             description = "Adding film to repository")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
             @ApiResponse(responseCode = "409", description = "Film with this id already exists"),})
     @PostMapping("/film/{filmId}")
     private ResponseEntity<String> addFilm(@PathVariable long filmId, @RequestBody Film film ){
