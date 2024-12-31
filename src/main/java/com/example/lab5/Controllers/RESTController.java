@@ -89,7 +89,6 @@ public class RESTController {
         if(filmId != film.getFilmId()){
             return ResponseEntity.badRequest().build();
         }
-        oracleFilmRepo.getById(filmId);
         adminService.updateFilm(
                 filmId,
                 film.getTitle(),
@@ -112,7 +111,6 @@ public class RESTController {
     })
     @DeleteMapping("/film/{filmId}")
     private ResponseEntity<String> removeFilm(@PathVariable long filmId){
-        oracleFilmRepo.getById(filmId);
         adminService.removeFilm(filmId);
         return ResponseEntity.ok("Film deleted successfully");
     }

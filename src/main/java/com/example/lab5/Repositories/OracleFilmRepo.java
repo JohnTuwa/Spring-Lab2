@@ -6,17 +6,11 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Types;
 import java.util.List;
-import java.util.Objects;
 @Repository
 @Primary
 @AllArgsConstructor
@@ -58,16 +52,14 @@ public class OracleFilmRepo implements Films {
     }
 
     @Override
-    public void removeFilm(long filmId) {
-        jdbcTemplate.update(DELETE_BY_ID_SQL, filmId);
+    public int removeFilm(long filmId) {
+        return jdbcTemplate.update(DELETE_BY_ID_SQL, filmId);
 
     }
 
-
-    public Film update(Film film) {
-        jdbcTemplate.update(UPDATE_SQL, film.getTitle(), film.getRating(),
+    public int update(Film film) {
+        return jdbcTemplate.update(UPDATE_SQL, film.getTitle(), film.getRating(),
                 film.getTicketPrice(), film.getSessionTime(), film.getFilmId());
-        return film;
     }
 
     public Film create(Film film) {
