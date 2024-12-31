@@ -50,9 +50,6 @@ public class RESTController {
     @GetMapping("/film/{filmId}")
     private ResponseEntity<Film> filmById(@PathVariable long filmId) {
         Film film = oracleFilmRepo.getById(filmId);
-        if (film == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(film);
     }
 
@@ -61,14 +58,12 @@ public class RESTController {
             description = "Adding film to repository")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success")})
-    @PostMapping("/add/{filmId}")
+    @PostMapping("/film/{filmId}")
     private ResponseEntity<String> addFilm(@PathVariable long filmId, @RequestBody Film film ){
-        System.out.println(film.getFilmId());
-        System.out.println(filmId);
         if(filmId != film.getFilmId()) {
             return ResponseEntity.badRequest().build();
         }
-        adminService.saveFilm(
+        adminService.createFilm(
                 filmId,
                 film.getTitle(),
                 film.getRating(),
@@ -89,15 +84,13 @@ public class RESTController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)
     })
-    @PutMapping("/edit/{filmId}")
+    @PutMapping("/film/{filmId}")
     private ResponseEntity<String> editFilm(@PathVariable long filmId, @RequestBody Film film ){
         if(filmId != film.getFilmId()){
             return ResponseEntity.badRequest().build();
         }
-        if (oracleFilmRepo.getById(filmId) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        adminService.saveFilm(
+        oracleFilmRepo.getById(filmId);
+        adminService.updateFilm(
                 filmId,
                 film.getTitle(),
                 film.getRating(),
@@ -117,11 +110,9 @@ public class RESTController {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
-    @DeleteMapping("/remove/{filmId}")
+    @DeleteMapping("/film/{filmId}")
     private ResponseEntity<String> removeFilm(@PathVariable long filmId){
-        if(oracleFilmRepo.getById(filmId) == null){
-            return ResponseEntity.notFound().build();
-        }
+        oracleFilmRepo.getById(filmId);
         adminService.removeFilm(filmId);
         return ResponseEntity.ok("Film deleted successfully");
     }

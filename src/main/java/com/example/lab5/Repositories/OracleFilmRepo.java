@@ -2,6 +2,9 @@ package com.example.lab5.Repositories;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
@@ -9,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Types;
 import java.util.List;
@@ -37,14 +41,19 @@ public class OracleFilmRepo implements Films {
 
 
     @Override
-    public Film getById(long id) {
-        return jdbcTemplate.queryForObject(FIND_BY_ID_SQL, ROW_MAPPER, id);
+    public Film getById(long filmId) {
+        try{
+            return jdbcTemplate.queryForObject(FIND_BY_ID_SQL, ROW_MAPPER, filmId);
+        }
+        catch (EmptyResultDataAccessException e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404),
+                    "Film with id: " + filmId + " not found");
+        }
     }
 
     @Override
     public List<Film> findAll() {
         System.out.println(jdbcTemplate.query(FIND_ALL_SQL, ROW_MAPPER));
-
         return jdbcTemplate.query(FIND_ALL_SQL, ROW_MAPPER);
     }
 
@@ -54,31 +63,28 @@ public class OracleFilmRepo implements Films {
 
     }
 
-    @Override
-    public Film saveFilm(Film film) {
-        if(update(film) == 1) return film;
-        return create(film);
 
-    }
-
-    private int update(Film film) {
-        return jdbcTemplate.update(UPDATE_SQL, film.getTitle(), film.getRating(),
+    public Film update(Film film) {
+        jdbcTemplate.update(UPDATE_SQL, film.getTitle(), film.getRating(),
                 film.getTicketPrice(), film.getSessionTime(), film.getFilmId());
+        return film;
     }
 
-    private Film create(Film film) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory(INSERT_SQL,
+    public Film create(Film film) {
+        long filmId = film.getFilmId();
+        try {
+            jdbcTemplate.update(INSERT_SQL,
+                    filmId,
+                    film.getTitle(),
+                    film.getRating(),
+                    film.getTicketPrice(),
+                    film.getSessionTime()
+            );
+            return film;
 
-                Types.NUMERIC, Types.VARCHAR, Types.NUMERIC, Types.NUMERIC, Types.VARCHAR);
-
-        pscf.setGeneratedKeysColumnNames("filmId");
-        PreparedStatementCreator preparedStatementCreator = pscf.newPreparedStatementCreator(
-                new Object[] { film.getFilmId(), film.getTitle(), film.getRating(),
-                        film.getTicketPrice(), film.getSessionTime()});
-        jdbcTemplate.update(preparedStatementCreator, keyHolder);
-        int newId = Objects.requireNonNull(keyHolder.getKey()).intValue();
-        return new Film(newId, film.getTitle(), film.getRating(),
-                film.getTicketPrice(), film.getSessionTime());
+        } catch (DuplicateKeyException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(409),
+                    "Film with id: " + filmId +" already exists");
+        }
     }
 }

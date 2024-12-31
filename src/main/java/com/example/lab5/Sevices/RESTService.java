@@ -18,8 +18,12 @@ public class RESTService {
         oracleFilmRepo.removeFilm(filmId);
     }
 
-    public void saveFilm(long filmId, String title, double rating,
+    public void createFilm(long filmId, String title, double rating,
                          double ticketPrice, String sessionTime){
-        oracleFilmRepo.saveFilm(new Film(filmId, title, rating, ticketPrice, sessionTime));
+        oracleFilmRepo.create(new Film(filmId, title, rating, ticketPrice, sessionTime));
+    }
+    public void updateFilm(long filmId, String title, double rating,
+                         double ticketPrice, String sessionTime){
+        oracleFilmRepo.update(new Film(filmId, title, rating, ticketPrice, sessionTime));
     }
 }
